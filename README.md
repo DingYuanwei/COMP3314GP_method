@@ -81,6 +81,8 @@ For the report-ready coverage, missing experiments, complete shared comparison, 
 
 ## Reproduction results
 
+**ORL default convention,2026-11-04:** Subsequent ORL comparisons use Euclidean NN for both CSA and PCA, with unit-length LDA columns. The paper/TA did not specify the recognition distance; this is our declared convention. The dated results below retain their original metric labels and numerical values. Existing Euclidean scores and the protocol decision are in [REPORT](docs/REPORT.md#orl-distance-default-20261104); cosine81.84/88.75 must not be relabeled as Euclidean.
+
 These results use the paper's output dimensions. **The two ORL CSA+LDA rows report the current grayscale and Gabor representatives; the other rows retain their shared-setting references.** The rows therefore do not all use one common input protocol. Accuracy is in percent; ± denotes sample standard deviation across the stated splits. Paper values are best-configuration results with incompletely specified repetition/selection details, so the numerical differences are descriptive rather than proof of identical protocols or statistical significance. Detailed settings and selection limits are given below the table and in REPORT.
 
 | Dataset / splits | Method | Our result | Paper | Difference, pp |

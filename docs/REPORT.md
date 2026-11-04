@@ -4,6 +4,16 @@
 
 **Report/slide exports:** [27-page vector atlas](../output/pdf/CSA_figure_atlas_20261030.pdf) and [complete27-figure catalogue](./TEAM_BRIEF.md#figure-pack), covering all16 main recognition cases plus reconstruction, convergence, curves, and extensions. No new model fits; the final curve panel re-scores existing saved models.
 
+<a id="orl-distance-default-20261104"></a>
+
+## ORL protocol decision, 2026-11-04: Euclidean NN as the default
+
+The user selects Euclidean distance as the default for subsequent ORL comparisons, because the paper's recognition protocol and the recorded instructor/TA correspondence specify NN without identifying Euclidean versus cosine. This is our declared convention, not a newly confirmed author setting. Apply the same input, splits and metric convention to CSA and PCA. For the current LDA comparison, retain unit-length LDA columns. Cosine results remain explicitly labeled sensitivity/historical results; frozen experiment sources/protocols retain their original bytes and defaults.
+
+Already-recorded Euclidean results at the current fixed inputs are: grayscale CSA11x2->LDA16, d15/y24,81.72% +/- 2.06%, matched PCA30->18,77.22% +/- 2.35%, and PCA22->16,77.13% +/- 2.89%; Gabor HOSVD CSA24->23, d20/y24 pi-context,87.53% +/- 2.91%, matched PCA24->23,85.72% +/- 2.61%. All use ten seeds20-29. These are existing scores, not new fits or independent tests. Their inputs were previously explored using probes. The dated headline tables/figure edition below still identify their recorded cosine representatives81.84/88.75; adopting Euclidean requires using the corresponding actual scores rather than relabeling those numbers.
+
+Sources: [gray refinement summary](../results/orl_gray_recovery_20261030/refinement/summary.csv) (`d15_y24`, `unit_gallery_euclidean`), [Gabor summary](../results/orl_recovery_20261027/summary.csv) (`d20_y24`, `hosvd`/`PCA24`, `unit_gallery_euclidean_g0`). This decision concerns the present ORL discussion; it does not retroactively change recorded MNIST/FERET experiments.
+
 <a id="orl-gray-recovery-20261030"></a>
 
 ## ORL grayscale follow-up, 2026-10-30: unpublished-setting exploration at 11x2 to LDA16

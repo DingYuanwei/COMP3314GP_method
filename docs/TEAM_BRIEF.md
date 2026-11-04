@@ -1,5 +1,7 @@
 # CSA Project: Team Handover, Report and Presentation Materials
 
+> **ORL distance decision,2026-11-04:** The user adopts Euclidean NN as the default for subsequent ORL comparisons, shared by CSA/PCA with unit-length LDA columns. At the existing current inputs, gray CSA/PCA30 means are81.72%/77.22%, and Gabor CSA24/PCA24 means are87.53%/85.72%. These recorded scores are exploratory, not new tests. The dated cosine representatives81.84%/88.75% retain their labels. See [full default convention and sources](./REPORT.md#orl-distance-default-20261104).
+
 Updated: 2026-10-30. This guide consolidates completed work; it does not launch new experiments. Its sources are the original papers, user-provided instructor/TA/data-author correspondence, current code, recorded protocols, and original result files.
 
 **Conclusion: we independently implemented CSA and completed full reproduction on ORL, MNIST, and original grayscale FERET within the instructor-approved scope, and completed input, selection, sample-size, regularization, supervised tensor reduction, robustness, and cost studies.** Numerical and prediction checks support the implementation, but we have not recovered every CSA paper result or method ordering. PIE is omitted with instructor permission. The evidence supports a substantial paper study and full reproduction within that approved scope; the instructor determines grades and bonus credit.
