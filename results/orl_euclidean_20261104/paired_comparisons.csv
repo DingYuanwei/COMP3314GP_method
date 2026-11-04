@@ -1,0 +1,11 @@
+CSA,PCA,metric,mean_CSA_minus_PCA_pp,wins,ties,losses
+gray_CSA22_LDA16,gray_PCA30_LDA18,euclidean,4.5,9,0,1
+gray_CSA22_LDA16,gray_PCA30_LDA18,cosine,-1.65625,4,0,6
+gray_CSA22_LDA16,gray_PCA22_LDA16,euclidean,4.59375,10,0,0
+gray_CSA22_LDA16,gray_PCA22_LDA16,cosine,0.40625,5,1,4
+gabor_CSA24_LDA23,gabor_PCA33_LDA25,euclidean,-0.875,3,1,6
+gabor_CSA24_LDA23,gabor_PCA33_LDA25,cosine,-5.4375,0,0,10
+gabor_CSA24_LDA23,gabor_PCA24_LDA23,euclidean,1.8125,7,0,3
+gabor_CSA24_LDA23,gabor_PCA24_LDA23,cosine,-1.84375,2,0,8
+gabor_CSA390,gabor_PCA76,euclidean,2.75,9,0,1
+gabor_CSA390,gabor_PCA76,cosine,1.5,6,1,3

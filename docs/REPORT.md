@@ -2,7 +2,59 @@
 
 **Project classification: full reproduction within the instructor-approved ORL, MNIST, and original grayscale FERET scope.** PIE omission is authorized. This classification does not assert author-identical implementation, complete recovery of undisclosed parameters, or exact agreement with every reported value. All numerical differences and extension/selection categories remain disclosed.
 
-**Report/slide exports:** [27-page vector atlas](../output/pdf/CSA_figure_atlas_20261030.pdf) and [complete27-figure catalogue](./TEAM_BRIEF.md#figure-pack), covering all16 main recognition cases plus reconstruction, convergence, curves, and extensions. No new model fits; the final curve panel re-scores existing saved models.
+**Report/slide exports:** [28-page vector atlas](../output/pdf/CSA_figure_atlas_20261104.pdf) and [complete28-figure catalogue](./TEAM_BRIEF.md#figure-pack), covering all16 main recognition cases plus reconstruction, convergence, curves, and extensions. No new model fits; the final curve panel re-scores existing saved models.
+
+<a id="orl-euclidean-20261104"></a>
+
+## Current ORL matched Euclidean results, 2026-11-04
+
+**Current matched Euclidean ORL results,2026-11-04:** Gray CSA11x2->LDA16 is81.72% +/- 2.06%, with matched PCA30->18 at77.22% +/- 2.35% and PCA22->16 at77.13% +/- 2.89%. Gabor CSA24->23 is87.53% +/- 2.91%, with matched PCA33->25 at88.41% +/- 1.96% and PCA24->23 at85.72% +/- 2.61%. Direct Gabor PCA76/CSA390 are86.91% +/- 1.60% /89.66% +/- 1.92%. Within grayscale and within Gabor, all methods share the same frozen input array, seeds20-29/G2-P8 and Euclidean NN; LDA uses unit columns. Gray CSA beats both PCA controls; Gabor CSA24 beats equal-budget PCA24 but not PCA33. Historical cosine81.84/88.75 results are preserved with their original labels. Thirty missing controls were fitted, fifty saved models reused, and all80 models/160 metric scores were verified. The20261104 figure edition is current; earlier editions remain historical.
+
+### Main comparison with the paper
+
+| ORL method | Euclidean mean +/- sample SD, % | Paper, % | Difference, pp |
+|---|---:|---:|---:|
+| Gray PCA30 + LDA18 | 77.22 +/- 2.35 | 82.20 | -4.98 |
+| Gray CSA11x2 + LDA16 | 81.72 +/- 2.06 | 84.10 | -2.38 |
+| Gabor PCA76 | 86.91 +/- 1.60 | 86.60 | +0.31 |
+| Gabor CSA390 | 89.66 +/- 1.92 | 94.40 | -4.74 |
+| Gabor PCA33 + LDA25 | 88.41 +/- 1.96 | 87.20 | +1.21 |
+| Gabor CSA24 + LDA23 | 87.53 +/- 2.91 | 90.90 | -3.37 |
+
+### Shared protocol and verification
+
+- All400 images/40 identities are retained. Every method uses the exact same gallery/probe indices in seeds20-29:80 gallery images (two/class),320 probes (eight/class). The gray and Gabor historical split JSONs are byte-equivalent in content.
+- Grayscale: one frozen56x46 array from d15/y24, YuNet eye coordinates, target(15.5,24)/(30.5,24), linear similarity warp, replicate border, PIL equalization. CSA11x2 and PCA30/PCA22 all use this identical array.
+- Gabor: one frozen28x23x40 array from d20/y24, sigma=pi/context, wavelength base4,39x39 finite kernels, magnitude power1. PCA76,CSA390,PCA33,PCA24 andCSA24 all use this identical array. CSA24 uses HOSVD; CSA390 uses rectangular identity; both are uncentered and retainTmax3. PCA is centered, ordinary LDA is unregularized, and its projection columns have unit length.
+- Euclidean1-NN is applied to every ORL model. The fitting-gallery origin is shared; subtracting a common mean does not change Euclidean distances. There is no per-method distance or input selection in this batch. Gray and Gabor have representation-specific inputs, rather than one array for both representations.
+- Fifty models were reused:30 gray models and20 Gabor24 models. Thirty missing Gabor PCA76/CSA390/PCA33 models were fitted, ten each. All80 models were finalized before scoring Euclidean and cosine, giving160 scores and51,200 repeated probe predictions. There is no new parameter search.
+- Verification independently checks feature hashes, disjoint complete splits/class counts, model-gallery indices, tensor projections, Fisher equations, Euclidean distances and cosine similarities. Ten new CSA390 models are independently replayed by sample-matrix covariance updates; maximum projector discrepancy is5.80e-12. Maximum independent Fisher relative residual is1.51e-12. Fifty prior per-split Euclidean correct counts match exactly. All1370 pre-existing CSV/JSON/source evidence files remain unchanged.
+
+### Relative performance and historical cosine controls
+
+| Pair | Euclidean CSA-PCA, pp | CSA wins/ties/losses |
+|---|---:|---:|
+| Gray CSA22->16 versus PCA30->18 |+4.50|9/0/1|
+| Gray CSA22->16 versus PCA22->16 |+4.59|10/0/0|
+| Gabor CSA24->23 versus PCA33->25 |-0.88|3/1/6|
+| Gabor CSA24->23 versus PCA24->23 |+1.81|7/0/3|
+
+The current gray comparison recovers CSA-over-PCA ordering at the paper dimensions, and the Gabor equal-budget comparison also favors CSA. Gabor CSA24 still trails paper-dimension PCA33; do not state universal CSA+LDA superiority. Repeated splits reuse400 photos; no independent-sample significance claim is made.
+
+Cosine below is scored on the exact same current input/model/split as Euclidean. These matched controls are distinct from the former published headline, which mixed earlier shared-reference inputs with later CSA representatives. The original20261030 headline is retained in the archived figure pack and dated sections below.
+
+| ORL method | Euclidean, % | Matched cosine historical control, % |
+|---|---:|---:|
+| Gray PCA30 + LDA18 | 77.22 +/- 2.35 | 83.50 +/- 2.29 |
+| Gray CSA11x2 + LDA16 | 81.72 +/- 2.06 | 81.84 +/- 1.96 |
+| Gabor PCA76 | 86.91 +/- 1.60 | 89.59 +/- 1.42 |
+| Gabor CSA390 | 89.66 +/- 1.92 | 91.09 +/- 1.35 |
+| Gabor PCA33 + LDA25 | 88.41 +/- 1.96 | 94.19 +/- 0.96 |
+| Gabor CSA24 + LDA23 | 87.53 +/- 2.91 | 88.75 +/- 2.89 |
+
+The paper and instructor/TA confirm NN without specifying the recognition metric. Euclidean is our declared default, not an author-confirmed setting. Inputs retain their prior probe-informed exploration and Gabor context is a disclosed extension; this publication switch is not a new blind evaluation or recovery of all author settings. Paper numbers are best configurations with unspecified split aggregation. MNIST/FERET results retain their previously recorded internally shared protocols.
+
+Evidence: [protocol](../results/orl_euclidean_20261104/protocol.json), [six headline rows](../results/orl_euclidean_20261104/comparison.csv), [all summaries and equal-budget controls](../results/orl_euclidean_20261104/summary.csv), [per-split scores](../results/orl_euclidean_20261104/results.csv), [paired comparisons](../results/orl_euclidean_20261104/paired_comparisons.csv), [matched cosine history](../results/orl_euclidean_20261104/matched_cosine_history.csv), [verification](../results/orl_euclidean_20261104/verification.json), [driver](../run_orl_euclidean_comparison.py). Rebuild with `python run_orl_euclidean_comparison.py --output results/orl_euclidean_rerun` after reconstructing the omitted historical inputs/models. The default output must not exist; numerical caches remain excluded from publication.
 
 <a id="orl-distance-default-20261104"></a>
 
@@ -10,15 +62,15 @@
 
 The user selects Euclidean distance as the default for subsequent ORL comparisons, because the paper's recognition protocol and the recorded instructor/TA correspondence specify NN without identifying Euclidean versus cosine. This is our declared convention, not a newly confirmed author setting. Apply the same input, splits and metric convention to CSA and PCA. For the current LDA comparison, retain unit-length LDA columns. Cosine results remain explicitly labeled sensitivity/historical results; frozen experiment sources/protocols retain their original bytes and defaults.
 
-Already-recorded Euclidean results at the current fixed inputs are: grayscale CSA11x2->LDA16, d15/y24,81.72% +/- 2.06%, matched PCA30->18,77.22% +/- 2.35%, and PCA22->16,77.13% +/- 2.89%; Gabor HOSVD CSA24->23, d20/y24 pi-context,87.53% +/- 2.91%, matched PCA24->23,85.72% +/- 2.61%. All use ten seeds20-29. These are existing scores, not new fits or independent tests. Their inputs were previously explored using probes. The dated headline tables/figure edition below still identify their recorded cosine representatives81.84/88.75; adopting Euclidean requires using the corresponding actual scores rather than relabeling those numbers.
+Already-recorded Euclidean results at the current fixed inputs are: grayscale CSA11x2->LDA16, d15/y24,81.72% +/- 2.06%, matched PCA30->18,77.22% +/- 2.35%, and PCA22->16,77.13% +/- 2.89%; Gabor HOSVD CSA24->23, d20/y24 pi-context,87.53% +/- 2.91%, matched PCA24->23,85.72% +/- 2.61%. All use ten seeds20-29. These are existing scores, not new fits or independent tests. Their inputs were previously explored using probes. The dated cosine sections below preserve historical81.84/88.75 values; the current headline now uses the independently checked matched Euclidean scores above.
 
 Sources: [gray refinement summary](../results/orl_gray_recovery_20261030/refinement/summary.csv) (`d15_y24`, `unit_gallery_euclidean`), [Gabor summary](../results/orl_recovery_20261027/summary.csv) (`d20_y24`, `hosvd`/`PCA24`, `unit_gallery_euclidean_g0`). This decision concerns the present ORL discussion; it does not retroactively change recorded MNIST/FERET experiments.
 
 <a id="orl-gray-recovery-20261030"></a>
 
-## ORL grayscale follow-up, 2026-10-30: unpublished-setting exploration at 11x2 to LDA16
+## Historical cosine ORL grayscale follow-up, 2026-10-30: 11x2 to LDA16
 
-**Current grayscale representative: 81.84% +/- 1.96%, versus the historical shared reference 77.47% +/- 5.41% and the paper 84.10%.** This is +4.38 percentage points over the historical reference, with nine improved splits and one lower split. The remaining paper gap is -2.26pp. The configuration was selected using already-observed probes; it is an exploratory winner, not a new blind test or a globally optimal parameter solution. README and the current headline charts use81.84%; the old shared77.47% is retained only as a historical comparison. The existing Gabor88.75% representative and shrinkage84.13% grayscale extension are separate results.
+**Historical cosine grayscale representative: 81.84% +/- 1.96%, versus the historical shared reference 77.47% +/- 5.41% and the paper 84.10%.** This is +4.38 percentage points over the historical reference, with nine improved splits and one lower split. The remaining paper gap is -2.26pp. The configuration was selected using already-observed probes; it is an exploratory winner, not a new blind test or a globally optimal parameter solution. The20261030 README and charts used81.84%; current Euclidean results are above; the old shared77.47% is retained only as a historical comparison. The existing Gabor88.75% representative and shrinkage84.13% grayscale extension are separate results.
 
 ### Fixed requirements and candidate design
 
@@ -69,13 +121,13 @@ python verify_orl_gray_recovery.py --output results/orl_gray_recovery_rerun
 python run_orl_gray_refinement.py --output results/orl_gray_recovery_rerun/refinement
 ```
 
-The consolidation script targets this recorded20261030 batch and does not fit models. The current27-figure edition is updated20261030: headline figures01/02/05 use gray81.84% +/- 1.96% and gap-2.26pp. The20261027 edition remains an unchanged historical archive. Detailed crop/distance and selection notes remain in captions and this section, outside the main result table.
+The consolidation script targets this recorded20261030 batch and does not fit models. The historical27-figure cosine edition is dated20261030: headline figures01/02/05 use gray81.84% +/- 1.96% and gap-2.26pp. The20261027 edition remains an unchanged historical archive. Detailed crop/distance and selection notes remain in captions and this section, outside the main result table.
 
 <a id="orl-recovery-20261027"></a>
 
-## ORL follow-up, 2026-10-27: original output dimensions, bounded recovery study
+## Historical cosine ORL follow-up, 2026-10-27: original output dimensions
 
-**Current representative result:** **88.75%±2.89%** (HOSVD start, context extension; ten splits, −2.15pp versus the paper90.90%). The full-square identity result **88.81%±2.97%** (full-square identity initialization variant; −2.09pp) is listed separately as an initialization-shape variant. Rectangular identity gives88.72%±3.01%. The pool's single-run maximum is **93.125% (298/320)**, with rectangular identity, d18/y25, seed22, and default centered-cosine NN. This is an exploratory best run with a context extension, not the ten-split mean or an author-confirmed original setting. Historical batch data are retained separately.
+**Historical cosine representative:** **88.75%±2.89%** (HOSVD start, context extension; ten splits, −2.15pp versus the paper90.90%). The full-square identity result **88.81%±2.97%** (full-square identity initialization variant; −2.09pp) is listed separately as an initialization-shape variant. Rectangular identity gives88.72%±3.01%. The pool's single-run maximum is **93.125% (298/320)**, with rectangular identity, d18/y25, seed22, and default centered-cosine NN. This is an exploratory best run with a context extension, not the ten-split mean or an author-confirmed original setting. Historical batch data are retained separately.
 
 ### Design and source interpretation
 
@@ -94,7 +146,7 @@ The public search did not identify a verified official implementation or missing
 | Input/start | Mean±sample SD, % | Single maximum, % | Mean minus CSA paper90.9, pp | Category |
 |---|---:|---:|---:|---|
 | d20/y24 rectangular identity |88.72±3.01|92.50|−2.18|Fixed rank-conforming start; context extension |
-| d20/y24 HOSVD (current representative) |**88.75±2.89**|92.19|−2.15|Fixed rank-conforming start; context extension |
+| d20/y24 HOSVD (historical cosine representative) |**88.75±2.89**|92.19|−2.15|Fixed rank-conforming start; context extension |
 | d20/y24 full identity |88.81±2.97|92.50|−2.09|Alternative initialization shape; context extension |
 | d20/y24 gallery-SSE-selected start |88.81±2.91|92.19|−2.09|Additional training-only start selection at fixed input/metric |
 | d18/y25 full identity |88.59±2.23|93.13|−2.31|Geometry/initialization variant |
@@ -149,7 +201,7 @@ updated: 2026-10-08. **200 G2/P8 limited explorations have been completed: ordin
 Paper: [Xu et al., *Reconstruction and Recognition of Tensor-Based Objects With Concurrent Subspaces Analysis*](../Reconstruction_and_Recognition_of_Tensor-Based_Objects_With_Concurrent_Subspaces_Analysis.pdf), IEEE TCSVT 18(1), 36–47, 2008, DOI 10.1109/TCSVT.2007.903317.
 
 - Actual range: **ORL, MNIST, original grayscale FERET**; original CMU PIE not obtained, omitted by instructor permission. This is full reproduction within the instructor-approved three-dataset scope; original CMU PIE is outside that approved execution scope.
-- Current ORL24→23 report/presentation representative: **88.75%±2.89%**, HOSVD start plus context extension, ten observed splits, **−2.15pp** versus the paper90.90%. The full-square identity result **88.81%±2.97%** is a separate initialization variant. Historical study-specific scores below remain unchanged. [Current protocol and limits](#orl-recovery-20261027).
+- Historical cosine ORL24→23 representative: **88.75%±2.89%**, HOSVD start plus context extension, ten observed splits, **−2.15pp** versus the paper90.90%. The full-square identity result **88.81%±2.97%** is a separate initialization variant. Historical study-specific scores below remain unchanged. [Current protocol and limits](#orl-recovery-20261027).
 - ORL's previous fixed controlled experiment: Twenty identical splits, σ ​​× context four inputs are all reported; CSA24→23 is 80.13/84.56/81.25/87.08%, and the fixed π context is +6.95pp (20/20 improvement) relative to the current round of 2π cropping. CSA390 prefers 2π in the context, indicating that it is not the joint optimal of the four methods. Verification of 1,280 eye point disturbances, errors, and measured projection costs was completed; DATER has subsequently completed independent expansion, and the submitted materials are still planned. [Complete controlled evidence](#orl-controlled).
 - ORL has previously had limited optimization within tailoring: CSA24+ordinary LDA 23 is 81.41%±2.41%, which is only +0.16pp (2 wins,4 ties,and4 losses) relative to the paired baseline of 81.25%; shared CSA390 is 88.41%, and two PCA are 88.41%/91.69%, both lower than the paired baseline. 90.9% of the papers were not recovered; clear TA conditions were met, and unknown settings were still disclosed. [Actual results and verification](#orl-ta-crop).
 - ORL Previously the paper's dimensions unknown parameter iteration: gallery-only validation selection CSA24+ordinary LDA 23 is 87.84%±3.28%, 6.59/3.53pp higher than the fixed baseline/context; shared CSA390 is 91.03% and 0.53pp lower than the context. Input contributions contribute major gains, unknown settings and preprocessing extensions are still listed separately, and no restoration of author agreement is claimed. [All stages, parameters and verification](#orl-unknown-parameters).
@@ -1521,7 +1573,7 @@ Data source/confirmation conditions see [Section 2](#protocols) and [HANDOFF](./
 
 ### 10.2 Reserved shared settings at the paper's dimensions reproduction anchor
 
-Current report/presentation representatives: grayscale CSA11x2->LDA16 **81.84%±1.96%** (-2.26pp versus84.10%) and Gabor CSA24->LDA23 **88.75%±2.89%** (HOSVD start, context extension; -2.15pp versus90.90%); **88.81%±2.97%** (full-square identity initialization variant; -2.09pp) is separate. The table below preserves historical shared-setting results, not the current README selections. See the [grayscale follow-up](#orl-gray-recovery-20261030) and [Gabor study](#orl-recovery-20261027).
+Current Euclidean representatives: grayscale CSA11x2->LDA16 **81.72%±2.06%** (-2.38pp versus84.10%) and Gabor CSA24->LDA23 **87.53%±2.91%** (HOSVD/context; -3.37pp versus90.90%); the historical cosine **88.81%±2.97%** (full-square identity initialization variant; -2.09pp) is separate. The table below preserves historical shared-setting results, not the current README selections. See the [grayscale follow-up](#orl-gray-recovery-20261030) and [Gabor study](#orl-recovery-20261027).
 
 This table does not incorporate subsequent expansion, method-by-method parameter selection, or exploration maximum; it is not the highest result of all historical experiments. FERET has only one fixed identity split, and the standard deviation of the split is not filled in. The fixed cosine comparison cannot be renamed as the winner of the verification selection.
 

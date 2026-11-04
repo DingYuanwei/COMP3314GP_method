@@ -23,7 +23,7 @@ from scipy.spatial.distance import cdist
 from threadpoolctl import threadpool_limits
 
 BASE = Path(__file__).resolve().parent
-DATE_STAMP = '20261030'
+DATE_STAMP = '20261104'
 OUT = BASE/f'results/report_figures_{DATE_STAMP}'
 PDF = BASE/f'output/pdf/CSA_figure_atlas_{DATE_STAMP}.pdf'
 PAPER, BLUE, TEAL, ORANGE, PURPLE, RED = '#344254', '#326FA0', '#168078', '#CF7132', '#8363A7', '#B64F58'
@@ -32,11 +32,11 @@ NAMES = {'CSA24_LDA23':'CSA24 + LDA23', 'CSA390':'CSA390',
          'PCA24_LDA23':'PCA24 + LDA23', 'PCA33_LDA25':'PCA33 + LDA25'}
 SOURCE_HASHES, ITEMS, DATAPOINTS, FIGURES = {}, [], [], []
 SOURCE_MAP = {
- 'all_recognition_cases':['results/orl_protocol_audit/shared_comparison.csv','results/orl_recovery_20261027/summary.csv','results/orl_gray_recovery_20261030/final_analysis.json'],
- 'orl_paper_comparison':['results/orl_protocol_audit/shared_comparison.csv','results/orl_recovery_20261027/summary.csv','results/orl_gray_recovery_20261030/final_analysis.json'],
+ 'all_recognition_cases':['results/orl_protocol_audit/shared_comparison.csv','results/orl_euclidean_20261104/comparison.csv'],
+ 'orl_paper_comparison':['results/orl_protocol_audit/shared_comparison.csv','results/orl_euclidean_20261104/comparison.csv'],
  'mnist_paper_comparison':['results/orl_protocol_audit/shared_comparison.csv'],
  'feret_paper_comparison':['results/orl_protocol_audit/shared_comparison.csv'],
- 'all_paper_gaps':['results/orl_protocol_audit/shared_comparison.csv','results/orl_recovery_20261027/summary.csv','results/orl_gray_recovery_20261030/final_analysis.json'],
+ 'all_paper_gaps':['results/orl_protocol_audit/shared_comparison.csv','results/orl_euclidean_20261104/comparison.csv'],
  'orl_ten_splits':['results/orl_recovery_20261027/results.csv','results/orl_recovery_20261027/summary.csv'],
  'orl_geometry_initialization':['results/orl_recovery_20261027/summary.csv'],
  'orl_sigma_context_factorial':['results/orl_controlled/summary.csv'],
@@ -57,7 +57,8 @@ SOURCE_MAP = {
  'retained_variation':['results/csa_lda_focus/representation_statistics.csv'],
  'feret_lda_curves':['results/feret_validation_selected_v3/lda_dimension_curves.csv'],
  'orl_historical_dimension_curves':['results/available_reproduction_v2/dimension_curves.csv'],
- 'method_pipeline':['csa.py','run_orl_recovery.py'],
+ 'method_pipeline':['csa.py','run_orl_recovery.py','results/orl_euclidean_20261104/protocol.json'],
+ 'orl_metric_comparison':['results/orl_euclidean_20261104/summary.csv'],
  'orl_current_lda_curves':[f'results/report_figures_{DATE_STAMP}/derived_lda_curves.csv','results/orl_recovery_20261027/models.csv','results/orl_recovery_20261027/results.csv']}
 plt.rcParams.update({'font.family':'DejaVu Sans', 'font.size':11,
     'axes.spines.top':False, 'axes.spines.right':False, 'axes.labelsize':11,
@@ -108,6 +109,8 @@ def one(title, subtitle='', nrows=1, ncols=1, size=(13.33,7.5)):
 
 def finish(fig, slug, title, caption, rows, category='Main result', use='Slides and report'):
     number=len(ITEMS)+1
+    if slug in ['orl_sigma_context_factorial','orl_three_fixed_inputs','orl_gallery_selection_stages','orl_crop_only_optimization','orl_sample_size','shrinkage_ablation','cost_scope','eye_perturbation','error_tradeoffs','mean_vs_maximum','retained_variation']:
+        caption='Historical protocol study; not the current matched Euclidean headline. '+caption
     if slug in ['all_recognition_cases','orl_paper_comparison','mnist_paper_comparison','feret_paper_comparison','all_paper_gaps']:
         caption+=' Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.'
     for name in SOURCE_MAP[slug]:source(name)
@@ -145,19 +148,13 @@ def draw_pair(ax, labels, paper, ours, sd=None, colors=None, limits=(65,101)):
 def current_rows():
     rows=[dict(r) for r in read('results/orl_protocol_audit/shared_comparison.csv')
           if r['profile'] in ['paper_dimensions','group_primary','cosine_control']]
-    recovery=read('results/orl_recovery_20261027/summary.csv')
-    new=pick(recovery,input='d20_y24',start='hosvd',policy='unit_gallery_cosine_g0')
-    gray=js('results/orl_gray_recovery_20261030/final_analysis.json')['best_global_mean']
+    current=read('results/orl_euclidean_20261104/comparison.csv')
     for r in rows:
         r['category']='Shared-setting reference'
-        if r['dataset']=='ORL' and r['method']=='CSA-2+LDA':
-            r.update(mean_percent=gray['mean_percent'],std_pp=gray['std_pp'],
-                     difference_pp=gray['mean_minus_paper_pp'],category='Gray recovery representative',
-                     source='results/orl_gray_recovery_20261030/final_analysis.json',profile='gray_recovery_representative')
-        if r['dataset']=='ORL' and r['method']=='CSA-3+LDA':
-            r.update(mean_percent=new['mean_percent'],std_pp=new['std_pp'],
-                     difference_pp=new['mean_minus_paper_pp'],category='HOSVD/context extension',
-                     source='results/orl_recovery_20261027/summary.csv',profile='HOSVD_context_representative')
+        if r['dataset']=='ORL':
+            new=pick(current,method=r['method'])
+            for key in ['mean_percent','std_pp','difference_pp','source','profile','category']:
+                r[key]=new[key]
     assert len(rows)==16
     return rows
 
@@ -166,12 +163,12 @@ def main_comparisons():
     rows=current_rows()
     short={'PCA+LDA (Gray)':'Gray PCA + LDA','CSA-2+LDA':'Gray CSA + LDA',
            'PCA (Gabor)':'Gabor PCA','CSA-3':'Gabor CSA','PCA+LDA (Gabor)':'Gabor PCA + LDA',
-           'CSA-3+LDA':'Gabor CSA24 + LDA23*'}
+           'CSA-3+LDA':'Gabor CSA24 + LDA23'}
     def method_label(r):
         if r['dataset']=='ORL':
             return {'PCA+LDA (Gray)':'Gray PCA30 + LDA18','CSA-2+LDA':'Gray CSA11x2 + LDA16',
                     'PCA (Gabor)':'Gabor PCA76','CSA-3':'Gabor CSA390',
-                    'PCA+LDA (Gabor)':'Gabor PCA33 + LDA25','CSA-3+LDA':'Gabor CSA24 + LDA23*'}[r['method']]
+                    'PCA+LDA (Gabor)':'Gabor PCA33 + LDA25','CSA-3+LDA':'Gabor CSA24 + LDA23'}[r['method']]
         if r['dataset'].startswith('MNIST'):
             g30='G30' in r['dataset']
             return ('PCA60' if g30 else 'PCA50') if r['method']=='PCA (Gabor)' else ('CSA810' if g30 else 'CSA975')
@@ -179,7 +176,7 @@ def main_comparisons():
         return ({50:'PCA45 + LDA25',100:'PCA95 + LDA40',200:'PCA112 + LDA69'} if r['method']=='PCA+LDA (Gray)'
                 else {50:'CSA10x4 + LDA35',100:'CSA11x5 + LDA44',200:'CSA13x7 + LDA62'})[q]
     title='Paper versus reproduction: all 16 recognition cases'
-    fig,axes=one(title,'Updated 2026-10-30 within the approved scope; protocol notes are below. * marks the Gabor context extension.',size=(13.33,9.3))
+    fig,axes=one(title,'Updated 2026-11-04: ORL uses matched Euclidean protocols. Settings and historical controls are described below.',size=(13.33,9.3))
     ax=axes[0];ax.axis('off')
     cells=[]
     for r in rows:
@@ -193,17 +190,17 @@ def main_comparisons():
         cell.set_edgecolor('#DDE4EB');cell.set_linewidth(.5)
         if i==0:cell.set_facecolor(PAPER);cell.set_text_props(color='white',weight='bold')
         else:cell.set_facecolor('#FFF0E4' if i in [2,6] else ('#F2F6FA' if i%2 else 'white'))
-    finish(fig,'all_recognition_cases',title,'ORL: ten splits; MNIST: three; +/- is sample SD. FERET: one fixed identity partition. Gray CSA uses the observed-probe-selected 2026-10-30 recovery; Gabor CSA24* uses HOSVD/context. Other rows retain reference protocols. Crop/distance details are in REPORT; author split aggregation is unknown.',rows,use='Report or backup slide')
+    finish(fig,'all_recognition_cases',title,'ORL: same ten splits and Euclidean NN; one shared gray input and one shared Gabor input across methods. LDA columns have unit norm. Inputs were previously explored on probes; context/HOSVD details are in REPORT. MNIST/FERET retain their recorded protocols. +/- is sample SD; paper aggregation is unknown.',rows,use='Report or backup slide')
     for ds,slug,title in [('ORL','orl_paper_comparison','ORL: six paper-dimension recognition cases'),
                            ('MNIST','mnist_paper_comparison','MNIST: both gallery sizes, both representations')]:
         selected=[r for r in rows if r['dataset'].startswith(ds)]
         fig,axes=one(title,'Diamonds: paper values. Circles: our means. Horizontal whiskers: sample SD.')
         labels=[method_label(r)+('\n'+r['dataset'] if ds=='MNIST' else '') for r in selected]
-        colors=[ORANGE if r['category'] in ['HOSVD/context extension','Gray recovery representative'] else BLUE for r in selected]
+        colors=[ORANGE if r['dataset']=='ORL' and r['method'].startswith('CSA') else BLUE for r in selected]
         draw_pair(axes[0],labels,[f(r,'paper_percent') for r in selected],[f(r) for r in selected],
                   [f(r,'std_pp') for r in selected],colors,limits=(65,101) if ds=='ORL' else (84,96))
         axes[0].legend(loc='upper right');fig.subplots_adjust(left=.27)
-        caption=('Gray CSA11x2->16 uses the current probe-selected crop/distance configuration; Gabor CSA24* uses HOSVD/context. Other ORL rows retain shared references, so this is not one common input protocol. See REPORT for full settings; paper aggregation is unknown.' if ds=='ORL' else
+        caption=('All gray methods share d15/y24 input; all Gabor methods share d20/y24 pi-context input. All use seeds20-29, G2/P8 and Euclidean NN; LDA columns have unit norm. Inputs retain prior probe exploration. See REPORT for settings and historical cosine comparisons; author aggregation is unknown.' if ds=='ORL' else
                  'MNIST uses the original three-seed references. Best paper configurations and our repeated means have different reporting conventions.')
         finish(fig,slug,title,caption,selected)
     fer=[r for r in rows if r['dataset'].startswith('FERET')]
@@ -220,20 +217,20 @@ def main_comparisons():
     title='Numerical gaps from the paper across all 16 cases'
     fig,axes=one(title,'Positive differences mean a higher recorded number; they do not prove a matched-protocol improvement.',size=(13.33,9.3))
     ax=axes[0];y=np.arange(16);vals=[f(r,'difference_pp') for r in rows]
-    ax.barh(y,vals,color=[ORANGE if r['category'] in ['HOSVD/context extension','Gray recovery representative'] else (TEAL if v>=0 else BLUE) for r,v in zip(rows,vals)])
+    ax.barh(y,vals,color=[ORANGE if r['dataset']=='ORL' and r['method'].startswith('CSA') else (TEAL if v>=0 else BLUE) for r,v in zip(rows,vals)])
     ax.set_yticks(y,[r['dataset']+' | '+method_label(r) for r in rows],fontsize=9);ax.invert_yaxis();ax.axvline(0,color=PAPER,lw=1)
     ax.set_xlim(-8.5,7);ax.set_xlabel('Our value minus paper value (percentage points)')
     for i,v in enumerate(vals):ax.text(v+(.13 if v>=0 else -.13),i,f'{fmt(v, signed=True)}',ha='left' if v>=0 else 'right',va='center',fontsize=9)
-    fig.subplots_adjust(left=.34);finish(fig,'all_paper_gaps',title,'Orange: current ORL CSA representatives, gray recovery81.84 and Gabor HOSVD/context88.75. Gray settings were selected using observed probes; see REPORT for crop/distance details. Other values retain reference protocols. Paper best-result aggregation is unknown.',rows,use='Report / backup slide')
+    fig.subplots_adjust(left=.34);finish(fig,'all_paper_gaps',title,'ORL uses matched Euclidean comparisons: gray CSA81.72 and Gabor CSA24 87.53. Inputs/splits/metric are shared within each representation. Other datasets retain their recorded protocols. Old cosine numbers are historical; original author metric/aggregation remains unspecified.',rows,use='Report / backup slide')
 
 
 def recovery():
     raw=read('results/orl_recovery_20261027/results.csv');summary=read('results/orl_recovery_20261027/summary.csv')
-    policy='unit_gallery_cosine_g0';colors=[ORANGE,PURPLE,'#73899D',BLUE]
+    policy='unit_gallery_euclidean_g0';colors=[ORANGE,PURPLE,'#73899D',BLUE]
     starts=['hosvd','full_identity','rectangular_identity','PCA24'];names=['HOSVD (representative)','Full-square identity variant','Rectangular identity','Matched PCA24 + LDA23']
     selected=[r for r in raw if r['input']=='d20_y24' and r['policy']==policy]
-    title='ORL recovery: every one of the ten observed splits'
-    fig,axes=one(title,'Same input, G2/P8, output 24->23; centered-cosine NN. No split is discarded.',ncols=2)
+    title='Gabor ORL Euclidean: every one of the ten splits'
+    fig,axes=one(title,'Same input, G2/P8, output 24->23; Euclidean NN and unit-column LDA. All ten splits retained.',ncols=2)
     for start,color,label in zip(starts,colors,names):
         rr=sorted([r for r in selected if r['start']==start],key=lambda r:int(r['seed']))
         axes[0].plot([int(r['seed']) for r in rr],[f(r,'accuracy_percent') for r in rr],'-o',color=color,label=label,lw=1.7,ms=4)
@@ -242,9 +239,9 @@ def recovery():
     axes[1].barh(np.arange(4),[f(r) for r in rr],xerr=[f(r,'std_pp') for r in rr],color=colors,capsize=4)
     axes[1].set_yticks(range(4),['HOSVD','Full identity','Rectangular','PCA24']);axes[1].invert_yaxis();axes[1].set_xlim(80,97);axes[1].set_xlabel('Ten-split mean +/- sample SD (%)');axes[1].axvline(90.9,color=PAPER,ls='--')
     for i,r in enumerate(rr):axes[1].text(f(r)+.2,i+.22,f'{fmt(f(r))} +/- {fmt(f(r,"std_pp"))}',fontsize=9)
-    finish(fig,'orl_ten_splits',title,'Current CSA representative: HOSVD/context 88.75 +/- 2.89%. Full identity 88.81 +/- 2.97% is a separate start-shape variant. The dashed line refers to CSA, not an original PCA24 result. Observed-split candidate comparisons are exploratory.',selected,category='Context extension')
-    title='ORL: geometry and initialization interactions'
-    fig,axes=one(title,'All nine cells: fixed sigma=pi, context, magnitude power1 and the same NN policy.')
+    finish(fig,'orl_ten_splits',title,'Current Euclidean CSA representative: HOSVD/context87.53 +/- 2.91%; matched PCA24 85.72 +/- 2.61%. Other starts are separately labeled variants. The dashed line is the CSA paper reference. Previously explored inputs; no new parameter selection.',selected,category='Context extension')
+    title='Gabor ORL Euclidean: geometry and initialization'
+    fig,axes=one(title,'All nine cells: fixed sigma=pi, context, magnitude power1 and Euclidean NN.')
     ss=['rectangular_identity','hosvd','full_identity'];gg=['d20_y24','d18_y25','d22_y22']
     z=np.array([[f(pick(summary,input=g,start=start,policy=policy)) for start in ss] for g in gg])
     ax=axes[0];im=ax.imshow(z,cmap='YlOrBr',vmin=85,vmax=91,aspect='auto');ax.grid(False)
@@ -391,8 +388,8 @@ def diagnostics():
     finish(fig,'error_tradeoffs',title,'3200 repeated probe records cover400 distinct photos. Input update:224 corrected and111 introduced errors. Same-budget comparison: CSA-only158, PCA-only249. Examples do not establish one causal explanation.',[dict(comparison='error analysis',**c)],category='Error analysis')
     data=js('results/orl_best_search/best_results.json')['best']+js('results/orl_best_search/paper_dimension_best.json')
     recovery=read('results/orl_recovery_20261027/summary.csv');new=pick(recovery,input='d20_y24',start='hosvd',policy='unit_gallery_cosine_g0')
-    data+=[dict(new,paper_target=90.9,label='Current HOSVD/context\n24 -> 23, ten splits')]
-    labels=['Probe-selected CSA32 + LDA24\n200 splits','Probe-selected CSA560\n200 splits','Paper-dimension CSA390\n200 splits','Historical CSA24 + LDA23\n200 splits','Current HOSVD/context\n24 -> 23, ten splits']
+    data+=[dict(new,paper_target=90.9,label='Historical cosine HOSVD/context\n24 -> 23, ten splits')]
+    labels=['Probe-selected CSA32 + LDA24\n200 splits','Probe-selected CSA560\n200 splits','Paper-dimension CSA390\n200 splits','Historical CSA24 + LDA23\n200 splits','Historical cosine HOSVD/context\n24 -> 23, ten splits']
     title='Selected configurations: mean versus observed maximum'
     fig,axes=one(title,'A high single run and the mean of its configuration are different quantities.')
     ax=axes[0]
@@ -459,14 +456,14 @@ def curves_and_pipeline():
                 if r['method']==method:groups[int(r['feature_dim'])].append(f(r,'accuracy_percent'))
             xs=sorted(groups);ax.plot(xs,[np.mean(groups[x]) for x in xs],color=color,label=method)
         ax.set_title(label);ax.set_ylim(0,101);ax.set_xlabel('Output features');ax.set_ylabel('Mean accuracy (%)');ax.legend(fontsize=7,loc='lower right')
-    finish(fig,'orl_historical_dimension_curves',title,'Historical alignment/Gabor/classification settings differ from the current88.75% HOSVD/context representative. Do not splice the current endpoint into these early curves or label all curves as one final pipeline.',data,category='Historical main experiment')
+    finish(fig,'orl_historical_dimension_curves',title,'Historical alignment/Gabor/classification settings differ from the current matched Euclidean protocol. Do not splice current endpoints into these early curves or label all curves as one final pipeline.',data,category='Historical main experiment')
     title='CSA pipeline and the full reproduction scope'
     fig,axes=one(title,'Group22 | ORL, MNIST and grayscale FERET; original PIE omitted with instructor permission.')
     ax=axes[0];ax.axis('off');fig.subplots_adjust(left=.055,right=.95)
     blocks=[('Inputs / preprocessing','Two-eye alignment + HE\nGabor: 5 scales x 8 orientations',BLUE),
             ('CSA representation','ORL object: 28 x 23 x 40\nCore: 4 x 2 x 3 = 24',TEAL),
             ('Ordinary Fisher LDA','80 fitting images, 40 identities\n24 <= N - Nc = 40; output23',PURPLE),
-            ('Nearest neighbor','80 gallery / 320 probe\nReport all ten observed splits',ORANGE)]
+            ('Nearest neighbor','Euclidean1-NN;80 gallery /320 probe\nReport all ten observed splits',ORANGE)]
     for i,(heading,body,color) in enumerate(blocks):
         x=.015+i*.245
         ax.add_patch(FancyBboxPatch((x,.49),.22,.32,boxstyle='round,pad=0.009',facecolor='#F3F6F9',edgecolor=color,lw=2,transform=ax.transAxes))
@@ -475,7 +472,7 @@ def curves_and_pipeline():
         if i<3:ax.annotate('',xy=(x+.237,.65),xytext=(x+.226,.65),xycoords=ax.transAxes,arrowprops=dict(arrowstyle='->',color=PAPER,lw=2))
     ax.text(.02,.30,'Fitting/gallery only: CSA bases, HOSVD initialization, means and LDA.\nThe sample axis is never compressed. Probe images do not fit the representation.',fontsize=12,transform=ax.transAxes,color=PAPER)
     ax.text(.02,.12,'Report categories separately: shared references | gallery selections | fixed extensions\ninitialization variants | probe-selected extrema',fontsize=10,transform=ax.transAxes,color='#596776')
-    finish(fig,'method_pipeline',title,'Independent implementation of the paper method within the approved scope. Current ORL representative uses HOSVD initialization and context extension; full-square initialization is separate. Numerical agreement, implementation coverage and author-identical protocol are distinct claims.',[dict(scope='ORL / MNIST / grayscale FERET',ORL_core='4x2x3',LDA=23)],use='Introductory slide')
+    finish(fig,'method_pipeline',title,'Independent implementation of the paper method within the approved scope. Current Gabor ORL representative uses Euclidean NN with HOSVD/context; full-square initialization is separate. Numerical agreement, implementation coverage and author-identical protocol are distinct claims.',[dict(scope='ORL / MNIST / grayscale FERET',ORL_core='4x2x3',LDA=23)],use='Introductory slide')
 
 
 def saved_model_curves():
@@ -499,16 +496,16 @@ def saved_model_curves():
             w=saved['lda_basis']/np.linalg.norm(saved['lda_basis'],axis=0)
             a=(saved['gallery_core']-saved['lda_mean'])@w;b=(z-saved['lda_mean'])@w
             for d in range(1,24):
-                distances=cdist(b[:,:d],a[:,:d],metric='cosine');neighbor=distances.argmin(1)
+                distances=cdist(b[:,:d],a[:,:d],metric='euclidean');neighbor=distances.argmin(1)
                 labels=(g[neighbor]//10)+1;truth=(q//10)+1
                 score=100*float(np.mean(labels==truth))
-                result.append(dict(seed=int(row['seed']),start=row['start'],lda_dimension=d,accuracy_percent=score,extra_fits=0))
+                result.append(dict(seed=int(row['seed']),start=row['start'],lda_dimension=d,metric='euclidean',accuracy_percent=score,extra_fits=0))
                 if d==23:
-                    reference=pick(expected,input='d20_y24',seed=row['seed'],start=row['start'],policy='unit_gallery_cosine_g0')
+                    reference=pick(expected,input='d20_y24',seed=row['seed'],start=row['start'],policy='unit_gallery_euclidean_g0')
                     assert abs(score-f(reference,'accuracy_percent'))<1e-10
     path=OUT/'derived_lda_curves.csv';write_table(path,result)
     title='ORL current input: LDA dimension curves from saved models'
-    fig,axes=one(title,'Zero new fits. Ten existing splits20-29; d20/y24, pi-context, 24D core, centered-cosine1-NN.')
+    fig,axes=one(title,'Zero new fits. Ten existing splits20-29; d20/y24, pi-context, 24D core, Euclidean1-NN with unit-column LDA.')
     for start,color,label in [('hosvd',ORANGE,'CSA24 HOSVD (representative)'),('full_identity',PURPLE,'CSA24 full identity variant'),('rectangular_identity',TEAL,'CSA24 rectangular identity'),('PCA24',BLUE,'Matched PCA24')]:
         rr=[r for r in result if r['start']==start];dims=range(1,24)
         means=[np.mean([r['accuracy_percent'] for r in rr if r['lda_dimension']==d]) for d in dims]
@@ -523,21 +520,43 @@ def write_table(path, rows):
         w=csv.DictWriter(handle,fieldnames=fields);w.writeheader();w.writerows(rows)
 
 
+def metric_comparison():
+    data=read('results/orl_euclidean_20261104/summary.csv')
+    title='ORL: metric choice changes the method ranking'
+    fig,axes=one(title,'Same inputs, ten splits, fixed dimensions and unit-column LDA. Only the NN distance changes.',ncols=2)
+    groups=[('Grayscale: d15/y24',[('gray_CSA22_LDA16','CSA22 + LDA16'),('gray_PCA30_LDA18','PCA30 + LDA18'),('gray_PCA22_LDA16','PCA22 + LDA16')]),
+            ('Gabor: d20/y24 pi-context',[('gabor_CSA24_LDA23','CSA24 + LDA23'),('gabor_PCA33_LDA25','PCA33 + LDA25'),('gabor_PCA24_LDA23','PCA24 + LDA23')])]
+    selected=[]
+    for ax,(heading,methods) in zip(axes,groups):
+        ax.set_title(heading)
+        for i,(id,label) in enumerate(methods):
+            e=pick(data,id=id,metric='euclidean');c=pick(data,id=id,metric='cosine');selected.extend([e,c])
+            ax.plot([f(e),f(c)],[i,i],color='#CAD3DC',lw=3)
+            for r,color,marker,offset in [(e,ORANGE,'o',-.1),(c,BLUE,'D',.1)]:
+                ax.errorbar(f(r),i+offset,xerr=f(r,'std_pp'),fmt=marker,color=color,capsize=3)
+                ax.annotate(fmt(f(r)),(f(r),i+offset),xytext=(0,9 if offset<0 else -17),textcoords='offset points',ha='center',color=color,fontsize=10)
+        ax.set_yticks(range(3),[label for _,label in methods]);ax.invert_yaxis();ax.set_ylim(2.6,-.6)
+        ax.set_xlim(70,99);ax.set_xlabel('Ten-split accuracy (%)');ax.grid(axis='y',visible=False);ax.grid(axis='x',color='#E5EAF0')
+    axes[0].plot([],[],'o',color=ORANGE,label='Current Euclidean');axes[0].plot([],[],'D',color=BLUE,label='Historical cosine control')
+    axes[0].legend(loc='lower right');fig.subplots_adjust(left=.18,wspace=.55)
+    finish(fig,'orl_metric_comparison',title,'CSA exceeds PCA30 in the gray Euclidean comparison and PCA24 in the Gabor equal-budget Euclidean comparison, but remains below Gabor PCA33. Cosine favors PCA more strongly. These metric controls share current inputs; they differ from earlier mixed-input published headline tables. Previously observed probes; no general superiority claim.',selected,category='Matched metric sensitivity')
+
+
 def main():
     for folder in ['png','svg']:(OUT/folder).mkdir(parents=True,exist_ok=True)
     PDF.parent.mkdir(parents=True,exist_ok=True)
     main_comparisons();recovery();controlled_studies();sample_selection_dater()
-    diagnostics();reconstruction_and_energy();curves_and_pipeline();saved_model_curves()
+    diagnostics();reconstruction_and_energy();curves_and_pipeline();saved_model_curves();metric_comparison()
     with PdfPages(PDF,metadata={'Title':'CSA full reproduction: figure atlas','Author':'HKU COMP3314 Group22','Subject':'Recorded results, scope labels and limitations'}) as atlas:
         for fig in FIGURES:atlas.savefig(fig)
     for fig in FIGURES:plt.close(fig)
     write_table(OUT/'figure_catalog.csv',ITEMS);write_table(OUT/'plot_data.csv',DATAPOINTS)
-    manifest=dict(created='2026-10-30',figure_count=len(ITEMS),project_classification='Full reproduction within the instructor-approved three-dataset scope',
+    manifest=dict(created='2026-11-04',figure_count=len(ITEMS),project_classification='Full reproduction within the instructor-approved three-dataset scope',
         generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),source_sha256=SOURCE_HASHES,
         provenance='All figures use saved evidence. The last curve panel newly scores saved models, zero new fits; endpoints independently match archived23D scores.',
         paper_values='Recorded Tables I/II/IV references; author split aggregation unknown.',
-        current_ORL='Gray CSA11x2+LDA16:81.84+/-1.96; Gabor HOSVD/context88.75+/-2.89; full-square88.81+/-2.97 separate',
-        historical_edition='results/report_figures_20261027 remains unchanged as the historical edition.',
+        current_ORL='Matched Euclidean: gray CSA11x2+LDA16:81.72+/-2.06; Gabor HOSVD/context CSA24+LDA23:87.53+/-2.91; matched PCA controls use identical inputs/splits/metric',
+        historical_edition='results/report_figures_20261027 and report_figures_20261030 remain unchanged historical editions.',
         statistics='Sample SD across specified splits, not CI. FERET uses one fixed identity split. Repeated predictions are not independent photos.',
         excluded='No face images, dataset labels/arrays, model caches or private letters included.',
         atlas=PDF.relative_to(BASE).as_posix(),figures=ITEMS)

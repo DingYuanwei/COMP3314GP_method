@@ -237,7 +237,7 @@
     "historical_links": "Some dataset/cache/private-letter links intentionally remain local; notices explain their exclusion."
   },
   "reconstruction_limits": "Data acquisition/preprocessing code is supplied. Later drivers reuse fixed historical paths and hashes; omitted caches must be rebuilt and some manually annotated inputs cannot be promised byte-identical from automatic detection. Recorded scores are evidence, not new rerun results.",
-  "updated": "2026-10-30",
+  "updated": "2026-11-04",
   "documentation_language": "All seven tracked Markdown documents are English; original Chinese versions remain recoverable from Git history. Frozen source/protocol evidence is unchanged.",
   "new_experiments": "results/orl_recovery_20261027: bounded, frozen90 CSA/30 PCA fits,1440 scores,460800 repeated predictions. Old experiment evidence unchanged.",
   "reproduction_terminology": "Full reproduction names the approved experimental scope; PIE omission is instructor-authorized. It does not assert author-identical code, recovery of every undisclosed setting, or exact numerical equality.",
@@ -259,5 +259,25 @@
     "current_atlas": "output/pdf/CSA_figure_atlas_20261030.pdf",
     "historical_figure_pack": "results/report_figures_20261027 remains unchanged.",
     "checks": "New atlas rendered/inspected; current gray row/data/gap checked; frozen model/source/old evidence and exclusion checks recorded in current figure verification.json."
+  },
+  "nov04_euclidean_update": {
+    "scope": "ORL headline only; MNIST/FERET retain their recorded internally shared protocols.",
+    "protocol": "results/orl_euclidean_20261104/protocol.json",
+    "comparison": "results/orl_euclidean_20261104/comparison.csv",
+    "verification": "results/orl_euclidean_20261104/verification.json",
+    "same_inputs_splits_metric": "One gray array and one Gabor array, identical ten G2/P8 splits across all methods, Euclidean NN, unit-column ordinary LDA.",
+    "model_counts": {
+      "new_fits": 30,
+      "reused_models": 50,
+      "total_models": 80,
+      "metric_scores": 160,
+      "repeated_predictions": 51200
+    },
+    "current_CSA_gray": "81.72+/-2.06",
+    "current_CSA_Gabor24": "87.53+/-2.91",
+    "limits": "Earlier input exploration remains disclosed. Gray CSA beats matched PCA; GaborCSA24 beats equal-budget PCA24 but not PCA33. Author distance and split aggregation remain unconfirmed.",
+    "historical_cosine": "Frozen old results and both earlier figure editions remain unchanged; matched current-input cosine is also retained.",
+    "current_figure_pack": "results/report_figures_20261104/CSA_report_slide_figures_20261104.zip",
+    "current_atlas": "output/pdf/CSA_figure_atlas_20261104.pdf"
   }
 }

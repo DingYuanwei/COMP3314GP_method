@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-04",
+  "seeds": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "G": 2,
+  "P": 8,
+  "input_size": {
+    "gray": [
+      56,
+      46
+    ],
+    "gabor": [
+      28,
+      23,
+      40
+    ]
+  },
+  "gray_input": "d15/y24, YuNet, linear/replicate/PIL HE",
+  "gabor_input": "d20/y24, pi-context, lambda0=4,39x39 Gabor, magnitude1; frozen recovery features",
+  "cases": [
+    {
+      "id": "gray_PCA30_LDA18",
+      "kind": "gray",
+      "method": "PCA+LDA (Gray)",
+      "pre_dims": 30,
+      "LDA": 18,
+      "paper_percent": 82.2
+    },
+    {
+      "id": "gray_CSA22_LDA16",
+      "kind": "gray",
+      "method": "CSA-2+LDA",
+      "pre_dims": [
+        11,
+        2
+      ],
+      "LDA": 16,
+      "paper_percent": 84.1
+    },
+    {
+      "id": "gabor_PCA76",
+      "kind": "gabor",
+      "method": "PCA (Gabor)",
+      "pre_dims": 76,
+      "LDA": null,
+      "paper_percent": 86.6
+    },
+    {
+      "id": "gabor_CSA390",
+      "kind": "gabor",
+      "method": "CSA-3",
+      "pre_dims": [
+        15,
+        1,
+        26
+      ],
+      "LDA": null,
+      "paper_percent": 94.4
+    },
+    {
+      "id": "gabor_PCA33_LDA25",
+      "kind": "gabor",
+      "method": "PCA+LDA (Gabor)",
+      "pre_dims": 33,
+      "LDA": 25,
+      "paper_percent": 87.2
+    },
+    {
+      "id": "gabor_CSA24_LDA23",
+      "kind": "gabor",
+      "method": "CSA-3+LDA",
+      "pre_dims": [
+        4,
+        2,
+        3
+      ],
+      "LDA": 23,
+      "paper_percent": 90.9
+    },
+    {
+      "id": "gray_PCA22_LDA16",
+      "kind": "gray",
+      "method": "PCA22+LDA16 equal budget",
+      "pre_dims": 22,
+      "LDA": 16,
+      "paper_percent": null
+    },
+    {
+      "id": "gabor_PCA24_LDA23",
+      "kind": "gabor",
+      "method": "PCA24+LDA23 equal budget",
+      "pre_dims": 24,
+      "LDA": 23,
+      "paper_percent": null
+    }
+  ],
+  "default_metric": "euclidean",
+  "historical_metric_control": "cosine",
+  "LDA_scale": "unit columns",
+  "NN_origin": "own gallery mean; common translation has no effect on Euclidean distance",
+  "CSA": {
+    "center": false,
+    "Tmax": 3,
+    "gray_start": "rectangular identity",
+    "Gabor24_start": "HOSVD",
+    "Gabor390_start": "rectangular identity"
+  },
+  "PCA": {
+    "center": true,
+    "solver": "gram"
+  },
+  "LDA": "ordinary unregularized Fisher; fixed paper dimensions",
+  "planned_new_fits": 30,
+  "planned_reused_models": 50,
+  "planned_scores": 160,
+  "sources_sha256": {
+    "run_orl_euclidean_comparison.py": "b155a5fe80aa0af356a157b39985d2b180cdc16d60f698a67afc3eb04ad57124",
+    "csa.py": "6aabff534f47786c9a5098b2459e3afc55f39ad3d86d99b2bcba220f868b06a3",
+    "gabor.py": "ceb12f2bfbe82e381375e14a1c60d0a0a4795b91544e7bff02c22e93ac61578f",
+    "run_orl_gray_recovery.py": "af22d92741aabe8f675b7025bf49b4e69ce60dc5ebb67caa62933b95419b3e3f"
+  },
+  "selection": "No new input/start/rank/distance search. Apply the user-selected Euclidean rule to fixed previously explored inputs.",
+  "limitations": [
+    "Current inputs were selected/explored on historical probes; not blind.",
+    "The Euclidean default is a group decision, not author/TA confirmation.",
+    "Two representation-specific inputs; all gray methods share one array and all Gabor methods share one array.",
+    "Paper best-configuration aggregation is unspecified.",
+    "MNIST/FERET keep their recorded internally shared protocols.",
+    "Historical published cosine table mixed earlier references; the matched cosine controls here use the same current inputs."
+  ]
+}

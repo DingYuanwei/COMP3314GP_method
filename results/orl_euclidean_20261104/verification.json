@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "models": 80,
+  "new_fits": 30,
+  "reused_models": 50,
+  "scores": 160,
+  "predictions": 51200,
+  "same_feature_hash_within_each_representation": true,
+  "same_ten_splits": true,
+  "same_distance_and_LDA_scale": true,
+  "old_correct_counts_recovered": 50,
+  "independent_projection_and_NN_checks": true,
+  "independent_CSA390_replays": 10,
+  "max_CSA_projector_error": 5.7959045049312555e-12,
+  "max_independent_Fisher_residual": 1.502773112780333e-12,
+  "old_evidence_unchanged": 1370,
+  "source_and_model_hashes_match": true,
+  "parameter_search": false,
+  "independent_blind_test": false,
+  "author_metric_confirmed": false
+}

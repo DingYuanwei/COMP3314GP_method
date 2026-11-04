@@ -1,0 +1,11 @@
+{
+  "gray": {
+    "input": "d15_y24",
+    "path": "results/orl_gray_recovery_20261030/refinement/features/d15_y24.npy",
+    "sha256": "7e7a4ef4afe24a0e5acab5ec44b80234fbc7cab9f369f4cf869033c394a6f95a"
+  },
+  "gabor": {
+    "path": "results/orl_recovery_20261027/features/d20_y24.npy",
+    "sha256": "0087bc61689b667a40ffdea411804ba6cbab6c1720d6278a63cc65b5092c8b72"
+  }
+}

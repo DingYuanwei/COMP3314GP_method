@@ -1,0 +1,9 @@
+dataset,profile,method,id,kind,metric,n_splits,mean_percent,std_pp,min_percent,max_percent,paper_percent,difference_pp,source,category
+ORL,matched_cosine,PCA+LDA (Gray),gray_PCA30_LDA18,gray,cosine,10,83.5,2.29071950123391,80.3125,87.1875,82.2,1.2999999999999972,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,CSA-2+LDA,gray_CSA22_LDA16,gray,cosine,10,81.84375,1.9623739343798199,79.0625,85.0,84.1,-2.2562499999999943,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,PCA (Gabor),gabor_PCA76,gabor,cosine,10,89.59375,1.4210257689820798,86.5625,91.5625,86.6,2.9937500000000057,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,CSA-3,gabor_CSA390,gabor,cosine,10,91.09375,1.3521619776819969,88.75,92.8125,94.4,-3.3062500000000057,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,PCA+LDA (Gabor),gabor_PCA33_LDA25,gabor,cosine,10,94.1875,0.9569736731546543,92.8125,95.9375,87.2,6.987499999999997,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,CSA-3+LDA,gabor_CSA24_LDA23,gabor,cosine,10,88.75,2.8942591644687092,84.0625,92.1875,90.9,-2.1500000000000057,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,PCA22+LDA16 equal budget,gray_PCA22_LDA16,gray,cosine,10,81.4375,2.2447856245084963,79.375,86.25,,,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL
+ORL,matched_cosine,PCA24+LDA23 equal budget,gabor_PCA24_LDA23,gabor,cosine,10,90.59375,1.9401303829324918,87.1875,94.0625,,,results/orl_euclidean_20261104/summary.csv,Matched cosine ORL

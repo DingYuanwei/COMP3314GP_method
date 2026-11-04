@@ -1,0 +1,225 @@
+% Vector PDF atlas: choose a page, or use the per-figure SVG/PNG exports.
+
+% Figure 1: Paper versus reproduction: all 16 recognition cases
+\begin{figure}[t]
+\centering
+\includegraphics[page=1,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{ORL: same ten splits and Euclidean NN; one shared gray input and one shared Gabor input across methods. LDA columns have unit norm. Inputs were previously explored on probes; context/HOSVD details are in REPORT. MNIST/FERET retain their recorded protocols. +/- is sample SD; paper aggregation is unknown. Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.}
+\label{fig:all_recognition_cases}
+\end{figure}
+
+% Figure 2: ORL: six paper-dimension recognition cases
+\begin{figure}[t]
+\centering
+\includegraphics[page=2,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{All gray methods share d15/y24 input; all Gabor methods share d20/y24 pi-context input. All use seeds20-29, G2/P8 and Euclidean NN; LDA columns have unit norm. Inputs retain prior probe exploration. See REPORT for settings and historical cosine comparisons; author aggregation is unknown. Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.}
+\label{fig:orl_paper_comparison}
+\end{figure}
+
+% Figure 3: MNIST: both gallery sizes, both representations
+\begin{figure}[t]
+\centering
+\includegraphics[page=3,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{MNIST uses the original three-seed references. Best paper configurations and our repeated means have different reporting conventions. Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.}
+\label{fig:mnist_paper_comparison}
+\end{figure}
+
+% Figure 4: FERET: three training sizes, PCA and CSA controls
+\begin{figure}[t]
+\centering
+\includegraphics[page=4,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{These are fixed shared-cosine controls, not validation-selected winners. One fixed identity partition per q; no repeated-identity SD or significance claim. CSA does not beat the reproduced PCA at q=50. Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.}
+\label{fig:feret_paper_comparison}
+\end{figure}
+
+% Figure 5: Numerical gaps from the paper across all 16 cases
+\begin{figure}[t]
+\centering
+\includegraphics[page=5,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{ORL uses matched Euclidean comparisons: gray CSA81.72 and Gabor CSA24 87.53. Inputs/splits/metric are shared within each representation. Other datasets retain their recorded protocols. Old cosine numbers are historical; original author metric/aggregation remains unspecified. Paper values: Xu et al., IEEE TCSVT (2008), Tables I/II/IV, doi:10.1109/TCSVT.2007.903317.}
+\label{fig:all_paper_gaps}
+\end{figure}
+
+% Figure 6: Gabor ORL Euclidean: every one of the ten splits
+\begin{figure}[t]
+\centering
+\includegraphics[page=6,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Current Euclidean CSA representative: HOSVD/context87.53 +/- 2.91\%; matched PCA24 85.72 +/- 2.61\%. Other starts are separately labeled variants. The dashed line is the CSA paper reference. Previously explored inputs; no new parameter selection.}
+\label{fig:orl_ten_splits}
+\end{figure}
+
+% Figure 7: Gabor ORL Euclidean: geometry and initialization
+\begin{figure}[t]
+\centering
+\includegraphics[page=7,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Geometry bundles change eye distance and height together; their individual effects are not isolated. Full-square initialization begins with larger mode dimensions than the final ranks. None of these means reaches 90.9\%.}
+\label{fig:orl_geometry_initialization}
+\end{figure}
+
+% Figure 8: ORL fixed factorial study: sigma by context
+\begin{figure}[t]
+\centering
+\includegraphics[page=8,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Whiskers are split SD. The effects are descriptive on repeated images. Context improves CSA24, but reducing sigma under context lowers CSA390; the settings are not jointly optimal for every method.}
+\label{fig:orl_sigma_context_factorial}
+\end{figure}
+
+% Figure 9: ORL three fixed inputs: improvements and regressions
+\begin{figure}[t]
+\centering
+\includegraphics[page=9,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. 120 outer fits; all negative branches retained. Context is a field-of-view extension and TT+HE is a photometric extension. This ten-split batch differs from the twenty-split factorial study.}
+\label{fig:orl_three_fixed_inputs}
+\end{figure}
+
+% Figure 10: Gallery-only staged selection: most gain comes early
+\begin{figure}[t]
+\centering
+\includegraphics[page=10,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Inputs include context/power extensions. CSA24 stages A->C add only about 0.03pp, and other controls can decline. Inner validation improvement does not guarantee outer improvement; this is not a blind new dataset.}
+\label{fig:orl_gallery_selection_stages}
+\end{figure}
+
+% Figure 11: Crop-only bounded optimization: small gain, negative controls
+\begin{figure}[t]
+\centering
+\includegraphics[page=11,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Dark: matched baseline; orange: validation-selected final setting. CSA24 improves only 0.16pp, while CSA390 and both PCA controls decline. Do not substitute this result for the context extension.}
+\label{fig:orl_crop_only_optimization}
+\end{figure}
+
+% Figure 12: ORL sample-size extension with the same five probes
+\begin{figure}[t]
+\centering
+\includegraphics[page=12,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Ten splits; sample SD whiskers. More fitting/gallery images change both representation estimation and NN coverage. G5/P5 is an extension, not the original G2/P8 experiment; no original-paper threshold is drawn.}
+\label{fig:orl_sample_size}
+\end{figure}
+
+% Figure 13: MNIST bounded selection: preserve the negative result
+\begin{figure}[t]
+\centering
+\includegraphics[page=13,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{CSA declines by 0.77pp at G30 and 0.32pp at G40. These are ten-seed paired results, not changes from the three-seed main-reference means. All failed stages remain archived.}
+\label{fig:mnist_selection_negative}
+\end{figure}
+
+% Figure 14: FERET: validation winners and fixed controls differ
+\begin{figure}[t]
+\centering
+\includegraphics[page=14,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{One fixed identity partition per q; no split SD. For q200 CSA, the fixed-cosine 95.38\% is higher than the actual validation-selected 93.77\%; both are retained.}
+\label{fig:feret_selection_vs_fixed}
+\end{figure}
+
+% Figure 15: DATER supervised tensor extension: a negative result
+\begin{figure}[t]
+\centering
+\includegraphics[page=15,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{DATER: 20 new models; CSA/PCA controls reused. 19/20 DATER runs hit the20-iteration cap. Strict free-trajectory failure and numerical sensitivity are recorded; this result does not establish that DATER is generally ineffective.}
+\label{fig:dater_matched_comparison}
+\end{figure}
+
+% Figure 16: Shrinkage ablation: compare both selected and matched variants
+\begin{figure}[t]
+\centering
+\includegraphics[page=16,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Ten splits; SD whiskers. Ranks/input settings may differ between independently selected ordinary and shrinkage pipelines. Only the same-winner alpha0 comparison isolates removal of regularization in that selected configuration.}
+\label{fig:shrinkage_ablation}
+\end{figure}
+
+% Figure 17: Representation cost: small weights, explicitly scoped timing
+\begin{figure}[t]
+\centering
+\includegraphics[page=17,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Weight counts830 vs618792; arrays228272 vs5171968 bytes. Timing points are per-seed medians, not an uncertainty estimate. Excludes alignment, Gabor, training and I/O; counted arrays are not peak system memory.}
+\label{fig:cost_scope}
+\end{figure}
+
+% Figure 18: Probe-eye perturbations: local robustness with no refitting
+\begin{figure}[t]
+\centering
+\includegraphics[page=18,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Twenty overlapping splits. The full robustness batch has1280 scores and409600 repeated predictions, zero new fits. This does not cover single-eye errors, rotation or large offsets; no universal robustness claim.}
+\label{fig:eye_perturbation}
+\end{figure}
+
+% Figure 19: Error analysis: corrections coexist with new failures
+\begin{figure}[t]
+\centering
+\includegraphics[page=19,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. 3200 repeated probe records cover400 distinct photos. Input update:224 corrected and111 introduced errors. Same-budget comparison: CSA-only158, PCA-only249. Examples do not establish one causal explanation.}
+\label{fig:error_tradeoffs}
+\end{figure}
+
+% Figure 20: Selected configurations: mean versus observed maximum
+\begin{figure}[t]
+\centering
+\includegraphics[page=20,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. Historical winning configurations were selected using probe scores across configurations and splits. Their means are also post-selection summaries. Different dimensions, inputs and split counts prevent a common-protocol ranking; maxima are not stable test estimates.}
+\label{fig:mean_vs_maximum}
+\end{figure}
+
+% Figure 21: ORL tensor reconstruction: error and representation storage
+\begin{figure}[t]
+\centering
+\includegraphics[page=21,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical Gabor/alignment version; not the new HOSVD/context recognition input. Learning-sample tensor reconstruction, not Gabor inversion or unseen-face generalization. Original absolute Gabor scale/pointwise curve values are unavailable; compare qualitative trends.}
+\label{fig:orl_reconstruction}
+\end{figure}
+
+% Figure 22: CSA convergence: rapid stabilization in the recorded input
+\begin{figure}[t]
+\centering
+\includegraphics[page=22,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{This diagnostic does not replace the recognition limitTmax3. Rapid SSE/basis stabilization does not prove a global optimum or optimal classification. Exact paper ordinates and author input scaling are not recovered.}
+\label{fig:csa_convergence}
+\end{figure}
+
+% Figure 23: Equal dimension does not imply equal retained variation
+\begin{figure}[t]
+\centering
+\includegraphics[page=23,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical protocol study; not the current matched Euclidean headline. These are projected-energy ratios, not percentages of identity information or accuracy. PCA and CSA have different structural constraints and centering conventions. This diagnostic alone does not identify the cause of the recognition gap.}
+\label{fig:retained_variation}
+\end{figure}
+
+% Figure 24: FERET main experiment: recognition versus LDA dimension
+\begin{figure}[t]
+\centering
+\includegraphics[page=24,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{One fixed identity partition. These curves are descriptive evaluations across dimensions; do not reselect the winner using the held-out curve. They correspond to our fixed control, not pointwise recovery of original Fig.6.}
+\label{fig:feret_lda_curves}
+\end{figure}
+
+% Figure 25: ORL historical dimension curves: three representation settings
+\begin{figure}[t]
+\centering
+\includegraphics[page=25,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Historical alignment/Gabor/classification settings differ from the current matched Euclidean protocol. Do not splice current endpoints into these early curves or label all curves as one final pipeline.}
+\label{fig:orl_historical_dimension_curves}
+\end{figure}
+
+% Figure 26: CSA pipeline and the full reproduction scope
+\begin{figure}[t]
+\centering
+\includegraphics[page=26,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Independent implementation of the paper method within the approved scope. Current Gabor ORL representative uses Euclidean NN with HOSVD/context; full-square initialization is separate. Numerical agreement, implementation coverage and author-identical protocol are distinct claims.}
+\label{fig:method_pipeline}
+\end{figure}
+
+% Figure 27: ORL current input: LDA dimension curves from saved models
+\begin{figure}[t]
+\centering
+\includegraphics[page=27,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{Descriptive scoring of saved directions1-23; no re-fitting or new parameter selection. Every23D endpoint matches the archived results. The fixed23D representative is retained even if a different curve point happens to score higher. Already-observed probes, context extension.}
+\label{fig:orl_current_lda_curves}
+\end{figure}
+
+% Figure 28: ORL: metric choice changes the method ranking
+\begin{figure}[t]
+\centering
+\includegraphics[page=28,width=\linewidth]{CSA_figure_atlas_20261104.pdf}
+\caption{CSA exceeds PCA30 in the gray Euclidean comparison and PCA24 in the Gabor equal-budget Euclidean comparison, but remains below Gabor PCA33. Cosine favors PCA more strongly. These metric controls share current inputs; they differ from earlier mixed-input published headline tables. Previously observed probes; no general superiority claim.}
+\label{fig:orl_metric_comparison}
+\end{figure}
