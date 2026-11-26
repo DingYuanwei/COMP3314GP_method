@@ -1,0 +1,20 @@
+\section{Problem and Contributions}
+\label{sec:overview}
+\subsection{Task and motivation}
+\citet{xu2008csa} study how to compress tensor-valued objects while retaining
+information for reconstruction and recognition. Vectorized image features can
+be high-dimensional relative to the training set: their ORL recognition setting
+uses $28\times23\times40=25{,}760$ Gabor values per image but only two training
+images per identity, or 80 in total. The challenge is to learn a useful compact
+representation from limited data, not simply to reshape the input.
+
+\subsection{Central idea and contributions}
+CSA learns shared bases along each object's modes and a small core for each
+sample. Its contributions are a reconstruction criterion for arbitrary-order
+tensors, an alternating eigendecomposition algorithm, a constrained-PCA
+interpretation, and reconstruction/recognition experiments on faces and digits.
+Unlike Tensorface's organization of an image ensemble by identity, pose, and
+illumination, CSA's axes describe an individual object, such as height, width,
+and filter channel \citep[Sec.~III-A]{xu2008csa}. This distinction makes axis
+definition a modeling choice, rather than treating all tensor representations
+as interchangeable.

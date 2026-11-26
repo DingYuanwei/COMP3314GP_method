@@ -1,0 +1,5 @@
+method,metric,mean_percent,std_pp,n_splits,source
+CSA + LDA,euclidean,87.53125,2.9108945861481597,10,results/orl_euclidean_20261104/summary.csv
+CSA + LDA,centered_cosine,88.75,2.8942591644687092,10,results/orl_euclidean_20261104/summary.csv
+PCA + LDA,euclidean,85.71875,2.6147700796522138,10,results/orl_euclidean_20261104/summary.csv
+PCA + LDA,centered_cosine,90.59375,1.9401303829324918,10,results/orl_euclidean_20261104/summary.csv

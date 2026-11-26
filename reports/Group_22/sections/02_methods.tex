@@ -1,0 +1,58 @@
+\section{Methods}
+\label{sec:methods}
+\subsection{Representation and reconstruction objective}
+For $N$ tensors $\mathcal X_i\in\mathbb R^{m_1\times\cdots\times m_K}$,
+choose dimensions $r_k\leq m_k$ and shared bases
+$U_k\in\mathbb R^{m_k\times r_k}$ with $U_k^\top U_k=I$.
+CSA encodes and reconstructs each sample as
+\begin{equation}
+\mathcal Y_i=\mathcal X_i\times_1U_1^\top\cdots\times_KU_K^\top,
+\qquad \widehat{\mathcal X}_i=\mathcal Y_i\times_1U_1\cdots\times_KU_K,
+\label{eq:encoding}
+\end{equation}
+where $\times_k$ multiplies along mode $k$. The bases minimize
+$E=\sum_i\|\mathcal X_i-\widehat{\mathcal X}_i\|_F^2$.
+Orthogonal projection gives
+$E=E_0-\sum_i\|\mathcal Y_i\|_F^2$, with constant
+$E_0=\sum_i\|\mathcal X_i\|_F^2$; minimizing reconstruction error therefore
+maximizes retained core energy \citep[Sec.~II-B]{xu2008csa}.
+
+\subsection{Alternating optimization}
+Initialize column-orthonormal bases. Fix all modes except $k$, project along
+those fixed modes, and unfold each result into
+$B_i^{(k)}\in\mathbb R^{m_k\times\prod_{j\ne k}r_j}$.
+The core unfolding is $U_k^\top B_i^{(k)}$, so
+\begin{equation}
+C_k=\sum_iB_i^{(k)}B_i^{(k)\top},\qquad
+E(U_k\mid U_{-k})=E_0-\operatorname{tr}(U_k^\top C_kU_k).
+\label{eq:conditional}
+\end{equation}
+Here $U_{-k}$ denotes the fixed bases. The leading $r_k$ eigenvectors of $C_k$ maximize the trace
+\citep[Theorem~1]{xu2008csa}. With eigenvalues in descending order,
+\begin{equation}
+E_{\mathrm{new}}-E_{\mathrm{old}}
+=\operatorname{tr}\!\bigl((U_k^{\mathrm{old}})^\top C_kU_k^{\mathrm{old}}\bigr)
+-\sum_{j=1}^{r_k}\lambda_j(C_k)\leq0.
+\label{eq:nonincrease}
+\end{equation}
+The old basis remains feasible for the same conditional problem, so its exact
+optimum cannot be worse. Cycle through the modes using the latest bases until
+stabilization or an iteration limit. These updates are coupled through $C_k$.
+At fixed ranks and preprocessing, the nonnegative objective is non-increasing
+and converges; this proves neither global optimality nor convergence of the
+bases. Appendix~\ref{app:proof} supplies the detailed argument.
+
+\subsection{Course connections and recognition}
+With consistent column-major vectorization,
+$\operatorname{vec}(\mathcal Y_i)=P^\top\operatorname{vec}(\mathcal X_i)$ for
+$P=U_K\otimes\cdots\otimes U_1$.
+CSA constrains the PCA-like projection to a Kronecker structure; flattening
+itself is lossless. The eigenupdate connects to PCA: for centered inputs,
+maximizing retained energy maximizes variance; otherwise it uses second moments
+\citep[Sec.~III-B]{xu2008csa}. For recognition, vectorize the core, optionally apply Fisher
+LDA, and classify by 1-NN \citep[Sec.~IV-C]{xu2008csa}.
+LDA uses labels to favor between-class over within-class scatter,
+while 1-NN assigns the closest gallery label. These connect CSA's recognition
+pipeline to supervised dimensionality reduction and instance-based learning
+covered in the course.
+CSA itself is unsupervised, so improved reconstruction need not improve recognition.

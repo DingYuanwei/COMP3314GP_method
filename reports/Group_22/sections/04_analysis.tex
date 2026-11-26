@@ -1,0 +1,54 @@
+\section{Critical Analysis and Team Insights}
+\label{sec:analysis}
+\subsection{Structural bias, sample size, and computational cost}
+CSA assumes that objects share useful mode-specific linear subspaces. Aligned
+axes make this plausible for the studied images, but a single Kronecker product
+restricts which joint subspaces can be represented. Separate mode matrices do
+not imply statistically independent variation. Shorter unfolded fibers give
+smaller estimation problems, yet fibers from one image are correlated, not new
+independent training images. Compact structure may improve generalization with
+scarce data, but the fiber count alone cannot guarantee it.
+
+The clearest benefit is projection storage: CSA needs $\sum_km_kr_k$ entries,
+versus $Dd$ for dense PCA, where $D=\prod_km_k$ and $d=\prod_kr_k$.
+For Gabor $28\times23\times40\to4\times2\times3$, including an LDA map of the same
+$24\to23$ size gives 830 versus 618,792 weights. This is not a peak-memory or universal
+runtime claim. Sample-space PCA can use an $N\times N$ eigenproblem
+when $N\ll D$ \citep[p.~40, footnote~2]{xu2008csa}; CSA also pays for tensor contractions and
+repeated updates.
+
+\subsection{What constitutes convincing evidence}
+At equal output dimension and identical centered inputs, unrestricted PCA has
+no higher optimal training reconstruction error than its constrained counterpart.
+CSA's equal-storage advantage is compatible with this: cheaper shared bases
+leave more budget for core coefficients. The budget, not simply the algorithm
+name, determines which claim is being tested.
+
+Recognition is a different objective. High-energy lighting variation may be
+uninformative about identity, and LDA is not an automatic remedy. The paper's
+90.90\% for CSA+LDA is below direct CSA's 94.40\% on ORL; the authors suggest
+overfitting \citep[Sec.~IV-C]{xu2008csa}, but their different core dimensions prevent attributing the entire
+gap to LDA. Likewise, our metric reversal demonstrates pipeline dependence.
+Cross-paper differences are descriptive: the paper's split aggregation is
+unspecified, preprocessing and partitions may differ, historical probes
+influenced development, and repeated splits reuse images. FERET agreement therefore does not prove a
+better implementation or statistically significant superiority.
+
+\subsection{Lessons and targeted improvements}
+Our central lesson is to separate three questions: what structure is imposed,
+what the optimizer guarantees, and what the evaluation measures. Vectorization
+preserves values; CSA's restriction on the projection changes the hypothesis
+class. Exact conditional minimization explains stable reconstruction error,
+but does not establish a globally best representation or a better classifier.
+
+Future evaluation should freeze preprocessing and metrics, select ranks within
+training-only validation, compare both equal-dimension and equal-storage
+budgets, and use fresh held-out data. Multiple orthogonal starts can measure
+initialization sensitivity, without claiming global optimality. Regularized LDA
+or supervised tensor objectives can target discrimination, but our negative
+DATER experiment (Appendix~\ref{app:controls}) shows that adding labels alone
+is insufficient evidence of improvement. More flexible or nonlinear representations
+are possible extensions, with additional capacity and validation costs; they are
+not automatic solutions to the Kronecker restriction. Overall, CSA offers a
+compact, interpretable structural bias whose recognition benefits remain
+conditional on the data and evaluation protocol.

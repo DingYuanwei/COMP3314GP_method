@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[preprint]{neurips_2026}
+\usepackage{amsmath,amssymb,booktabs,placeins,graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\title{Concurrent Subspaces Analysis:\\
+A Critical Study and Experimental Reproduction}
+\author{Ding Yuanwei, Guan Tik Sha, Ng Cheuk Tung, and Wang Zhengwei\\
+COMP3314 Group 22, The University of Hong Kong}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Concurrent Subspaces Analysis (CSA) learns compact tensor representations through
+coupled orthogonal projections. We explain its reconstruction objective and exact
+alternating updates, relate it to PCA, LDA, and nearest-neighbor recognition, and
+evaluate the evidence in the original paper. Our independent reproduction on
+ORL, MNIST, and grayscale FERET supports substantial projection-storage savings
+but conditional recognition gains. Controlled comparisons reveal sensitivity to
+feature dimensions, preprocessing, and distance metrics. We distinguish
+optimization guarantees from generalization claims and identify validation
+priorities for further work.
+\end{abstract}
+
+\input{sections/01_overview.tex}
+\input{sections/02_methods.tex}
+\input{sections/03_evidence.tex}
+\clearpage
+\input{sections/04_analysis.tex}
+\label{end:main}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+\clearpage
+\appendix
+\input{sections/appendix.tex}
+\end{document}
